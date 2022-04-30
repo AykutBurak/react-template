@@ -8,6 +8,8 @@ export const RequireAuth: React.FC<{ children: React.ReactNode }> = ({
   const currentUser = useCurrentUser();
   const location = useLocation();
 
+  console.log(currentUser);
+
   if (!currentUser.data?.username)
     return <Navigate to="/login" state={{ from: location }} replace />;
 

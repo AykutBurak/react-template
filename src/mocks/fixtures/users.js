@@ -3,7 +3,7 @@ import { faker } from "@faker-js/faker";
 export const users = [
   {
     username: "my-user",
-    password: "my-user-password",
+    password: "1234",
   },
 ];
 

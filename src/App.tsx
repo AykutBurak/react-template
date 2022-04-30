@@ -8,6 +8,7 @@ import { LoginLayout } from "components/Layout/LoginLayout";
 import { RequireAuth } from "components/Auth/RequireAuth";
 import { AppLayout } from "components/Layout/AppLayout";
 import { Home } from "pages/Home";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ function App() {
             }
           />
         </Routes>
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </ChakraProvider>
   );
