@@ -28,7 +28,6 @@ export const authHandlers = [
   }),
 
   rest.get("/user", (req, res, ctx) => {
-    console.log({ auth });
     if (!auth.isAuth) {
       return res(
         ctx.status(204),

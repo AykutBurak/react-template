@@ -1,22 +1,32 @@
 // src/mocks/handlers.js
-import { rest } from 'msw'
-import { filterByFields, games } from './fixtures/games'
+import { rest } from "msw";
+import { filterByFields, games } from "./fixtures/games";
 
-const PAGE_SIZE = 10
+export const GAMES_PAGE_SIZE = 24;
 
 export const gamesHandlers = [
-  rest.get('/games/:page', (req, res, ctx) => {
-    let clonedGames = [...games]
+  rest.get("/games/:page", (req, res, ctx) => {
+    let clonedGames = [...games];
+    const currentPage = Number(req.params.page);
 
-    if (req.url.searchParams) {
-      clonedGames = filterByFields(req.url.searchParams.entries())
+    const filterEntries = Array.from(req.url.searchParams.entries());
+
+    if (filterEntries.length) {
+      clonedGames = filterByFields(filterEntries);
     }
 
     return res(
       ctx.status(200),
       ctx.json({
-        data: clonedGames.splice(req.params.page * PAGE_SIZE, PAGE_SIZE),
+        games: clonedGames.splice(
+          currentPage * GAMES_PAGE_SIZE,
+          GAMES_PAGE_SIZE
+        ),
+        nextPage:
+          games.length >= (currentPage + 1) * GAMES_PAGE_SIZE
+            ? currentPage + 1
+            : undefined,
       })
-    )
+    );
   }),
-]
+];

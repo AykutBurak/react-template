@@ -24,8 +24,5 @@ export function createUser(
 }
 
 export function getUser({ username, password }) {
-  console.log(users);
-  console.log({ username, password });
-
   return users.find((u) => u.username === username && u.password === password);
 }
