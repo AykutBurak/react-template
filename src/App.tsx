@@ -1,7 +1,7 @@
 import React from "react";
-import "App.css";
-import { PathRouteProps, Route, Routes } from "react-router-dom";
-import { Login } from "pages/Login";
+import "./App.css";
+import { Route, Routes } from "react-router-dom";
+import { Login } from "./pages/Login";
 import { ChakraProvider } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { LoginLayout } from "components/Layout/LoginLayout";
@@ -10,10 +10,6 @@ import { AppLayout } from "components/Layout/AppLayout";
 import { Home } from "pages/Home";
 
 const queryClient = new QueryClient();
-
-const AuthRequiredRoute: React.FC<PathRouteProps> = ({ children, ...rest }) => (
-  <Route {...rest} element={<RequireAuth>{children}</RequireAuth>} />
-);
 
 function App() {
   return (
@@ -28,11 +24,16 @@ function App() {
               </LoginLayout>
             }
           />
-          <AuthRequiredRoute path="/">
-            <AppLayout>
-              <Home />
-            </AppLayout>
-          </AuthRequiredRoute>
+          <Route
+            path="/"
+            element={
+              <RequireAuth>
+                <AppLayout>
+                  <Home />
+                </AppLayout>
+              </RequireAuth>
+            }
+          />
         </Routes>
       </QueryClientProvider>
     </ChakraProvider>
