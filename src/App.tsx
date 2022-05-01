@@ -1,14 +1,16 @@
 import React from "react";
 import "./App.css";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { Login } from "./pages/Login";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, Progress } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { LoginLayout } from "components/Layout/LoginLayout";
 import { RequireAuth } from "components/Auth/RequireAuth";
 import { AppLayout } from "components/Layout/AppLayout";
-import { Games } from "pages/Games";
 import { ReactQueryDevtools } from "react-query/devtools";
+
+const Games = React.lazy(() => import("pages/Games"));
+const GameDetail = React.lazy(() => import("pages/Games/_id"));
 
 const queryClient = new QueryClient();
 
@@ -26,15 +28,31 @@ function App() {
             }
           />
           <Route
-            path="/"
+            path="/games"
             element={
               <RequireAuth>
                 <AppLayout>
-                  <Games />
+                  <React.Suspense fallback={<Progress isIndeterminate />}>
+                    <Games />
+                  </React.Suspense>
                 </AppLayout>
               </RequireAuth>
             }
           />
+          <Route
+            path="/games/:id"
+            element={
+              <RequireAuth>
+                <AppLayout>
+                  <React.Suspense fallback={<Progress isIndeterminate />}>
+                    <GameDetail />
+                  </React.Suspense>
+                </AppLayout>
+              </RequireAuth>
+            }
+          />
+          {/* Navigate to games when no match */}
+          <Route path="*" element={<Navigate to="/games" />} />
         </Routes>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
