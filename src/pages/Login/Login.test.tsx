@@ -6,6 +6,7 @@ import { server } from "mocks/server";
 import { createUser } from "mocks/fixtures/users";
 import { Login } from "./index";
 import { QueryCache, QueryClient } from "react-query";
+import { Route } from "react-router-dom";
 
 const createdUser = createUser();
 
@@ -48,9 +49,13 @@ describe("Login", () => {
     });
   });
 
-  test("should show success toast when the username or password is correct", async () => {
+  test("should show success toast and redirect to the home page when the username or password is correct", async () => {
     const user = userEvent.setup();
-    renderWithClient(queryClient, <Login />);
+    renderWithClient(
+      queryClient,
+      <Login />,
+      <Route path="/" element={<div>Home page</div>} />
+    );
     await user.type(screen.getByLabelText(/username/i), createdUser.username);
     await user.type(screen.getByLabelText(/password/i), createdUser.password);
 
@@ -61,5 +66,9 @@ describe("Login", () => {
     expect(screen.getByRole("alert", { name: "Welcome" })).toHaveTextContent(
       createdUser.username
     );
+
+    await waitFor(() => screen.findByText(/home page/i));
+
+    expect(screen.getByText(/home page/i)).toBeInTheDocument();
   });
 });

@@ -61,7 +61,7 @@ describe("Home page", () => {
     await waitFor(async () => {
       const loadMoreBtn = screen.getByRole("button", { name: /load more/i });
       const promises = [];
-      let loadMoreCount = games.length / GAMES_PAGE_SIZE;
+      let loadMoreCount = Math.ceil(games.length / GAMES_PAGE_SIZE) + 1;
       while (loadMoreCount >= 0) {
         promises.push(user.click(loadMoreBtn));
         loadMoreCount--;

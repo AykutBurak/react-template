@@ -1,10 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-import {
-  interceptorRequest,
-  interceptorRequestError,
-  interceptorResponse,
-  interceptorResponseError,
-} from "./interceptors";
+import { interceptorResponse } from "./interceptors";
 
 // Create an axios instance
 export const http: AxiosInstance = axios.create({
@@ -13,5 +8,4 @@ export const http: AxiosInstance = axios.create({
     process.env.NODE_ENV === "development" ? "http://localhost:3000/" : "", // should come from .env file
 });
 
-http.interceptors.response.use(interceptorResponse, interceptorResponseError);
-http.interceptors.request.use(interceptorRequest, interceptorRequestError);
+http.interceptors.response.use(interceptorResponse);
