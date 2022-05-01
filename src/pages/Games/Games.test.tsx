@@ -2,11 +2,12 @@ import React from "react";
 import { renderWithClient, screen, waitFor } from "../../test-utils";
 import "@testing-library/jest-dom";
 import { server } from "mocks/server";
-import { Games } from "./index";
+import Games from "./index";
 import { GAMES_PAGE_SIZE } from "mocks/games.handler";
 import userEvent from "@testing-library/user-event";
 import { QueryCache, QueryClient } from "react-query";
 import { games } from "mocks/fixtures/games";
+import { Route } from "react-router-dom";
 
 describe("Games page", () => {
   beforeAll(() => {
@@ -60,7 +61,7 @@ describe("Games page", () => {
 
     await waitFor(
       async () => {
-        const loadMoreBtn = screen.getByRole("button", { name: /load more/i });
+        const loadMoreBtn = screen.getByText(/load more/i);
         const promises = [];
         let loadMoreCount = Math.ceil(games.length / GAMES_PAGE_SIZE) + 1;
         while (loadMoreCount >= 0) {
@@ -79,5 +80,37 @@ describe("Games page", () => {
     expect(
       screen.getByRole("button", { name: /no more to load/i })
     ).toBeDisabled();
+  });
+
+  test("should navigate to the game detail page when game card clicked", async () => {
+    const queryCache = new QueryCache();
+    const queryClient = new QueryClient({ queryCache });
+    const firstGame = games[0];
+
+    renderWithClient(
+      queryClient,
+      <Games />,
+      <Route
+        path={`/games/${firstGame.id}`}
+        element={<div>{firstGame.id}</div>}
+      />
+    );
+    const user = userEvent.setup();
+
+    await waitFor(
+      async () => {
+        const seeDetailsBtn = screen.getByTestId(
+          `details-button-${firstGame.id}`
+        );
+        await user.click(seeDetailsBtn);
+
+        return screen.findByText(firstGame.id);
+      },
+      {
+        timeout: 3000,
+      }
+    );
+
+    expect(screen.getByText(firstGame.id)).toBeInTheDocument();
   });
 });

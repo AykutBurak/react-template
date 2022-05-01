@@ -4,7 +4,7 @@ import { GameCard } from "components/Games/GameCard";
 import { useInfiniteGames } from "components/Games/gamesQueries";
 import React from "react";
 
-export const Games: React.FC<Record<string, never>> = () => {
+const Games: React.FC<Record<string, never>> = () => {
   const { data, isSuccess, isLoading, fetchNextPage, hasNextPage } =
     useInfiniteGames();
 
@@ -33,3 +33,5 @@ export const Games: React.FC<Record<string, never>> = () => {
 
   return <div>Something bad happened</div>;
 };
+
+export default Games;

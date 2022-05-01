@@ -1,8 +1,10 @@
-import { Badge, Box, Image } from "@chakra-ui/react";
+import { Badge, Box, Center, Image } from "@chakra-ui/react";
 import React from "react";
 import { Game } from "./games.types";
+import { Link } from "react-router-dom";
 
 export const GameCard: React.FC<Game> = ({
+  id,
   genre,
   image,
   platforms,
@@ -64,6 +66,11 @@ export const GameCard: React.FC<Game> = ({
         <Box as="span" ml="2" color="gray.600" fontSize="sm">
           Game genre: {genre}
         </Box>
+        <Center my={3}>
+          <Link data-testid={`details-button-${id}`} to={`/games/${id}`}>
+            See Details
+          </Link>
+        </Center>
       </Box>
     </Box>
   );

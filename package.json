@@ -60,5 +60,13 @@
   },
   "msw": {
     "workerDirectory": "public"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}",
+      "!**/*test*",
+      "!**/node_modules/**",
+      "!src/mocks/**"
+    ]
   }
 }
