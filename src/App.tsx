@@ -7,7 +7,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { LoginLayout } from "components/Layout/LoginLayout";
 import { RequireAuth } from "components/Auth/RequireAuth";
 import { AppLayout } from "components/Layout/AppLayout";
-import { Home } from "pages/Home";
+import { Games } from "pages/Games";
 import { ReactQueryDevtools } from "react-query/devtools";
 
 const queryClient = new QueryClient();
@@ -30,7 +30,7 @@ function App() {
             element={
               <RequireAuth>
                 <AppLayout>
-                  <Home />
+                  <Games />
                 </AppLayout>
               </RequireAuth>
             }

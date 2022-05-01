@@ -4,8 +4,9 @@ import { GameCard } from "components/Games/GameCard";
 import { useInfiniteGames } from "components/Games/gamesQueries";
 import React from "react";
 
-export const Home: React.FC<Record<string, never>> = () => {
-  const { data, isSuccess, fetchNextPage, hasNextPage } = useInfiniteGames();
+export const Games: React.FC<Record<string, never>> = () => {
+  const { data, isSuccess, isLoading, fetchNextPage, hasNextPage } =
+    useInfiniteGames();
 
   if (isSuccess && data?.pages) {
     return (
@@ -19,12 +20,16 @@ export const Home: React.FC<Record<string, never>> = () => {
         ))}
         <Center my="10">
           <Button disabled={!hasNextPage} onClick={() => fetchNextPage()}>
-            Load More
+            {hasNextPage ? "Load More" : "No more to load"}
           </Button>
         </Center>
       </div>
     );
   }
 
-  return <div>Loading...</div>;
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  return <div>Something bad happened</div>;
 };
