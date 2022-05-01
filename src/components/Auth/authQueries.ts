@@ -66,7 +66,7 @@ export function useLogoutMutation() {
   return useMutation(logout, {
     onError(e: AxiosError<ErrorType>) {
       toast({
-        title: "Could not login",
+        title: "Could not logout",
         description: e.response?.data.errorMessage,
         duration: 9000,
         isClosable: true,

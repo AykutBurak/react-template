@@ -3,7 +3,8 @@ import { render, RenderOptions } from "@testing-library/react";
 import { ChakraProvider } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import "@testing-library/jest-dom";
-import { BrowserRouter, MemoryRouter, Routes } from "react-router-dom";
+import { MemoryRouter, Routes } from "react-router-dom";
+import { InitialEntry } from "history";
 
 const AllTheProviders: FC<Record<string, any>> = ({ children }) => {
   return (
@@ -24,15 +25,16 @@ export { customRender as render };
 export function renderWithClient(
   client: QueryClient,
   ui: React.ReactElement,
-  otherRoute?: React.ReactElement | null | undefined
+  otherRoute?: React.ReactElement | null,
+  initialEntries?: InitialEntry[]
 ) {
   const { rerender, ...result } = render(
     <QueryClientProvider client={client}>
       <ChakraProvider>
-        <BrowserRouter>
+        <MemoryRouter initialEntries={initialEntries}>
           {ui}
           <Routes>{otherRoute}</Routes>
-        </BrowserRouter>
+        </MemoryRouter>
       </ChakraProvider>
     </QueryClientProvider>
   );

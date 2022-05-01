@@ -32,10 +32,6 @@ export const gamesHandlers = [
   rest.get("/game/:id", (req, res, ctx) => {
     const id = req.params.id;
 
-    return res(
-      ctx.delay(1000),
-      ctx.status(200),
-      ctx.json(games.find((game) => game.id === id))
-    );
+    return res(ctx.status(200), ctx.json(games.find((game) => game.id === id)));
   }),
 ];
