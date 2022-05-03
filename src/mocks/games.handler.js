@@ -3,9 +3,21 @@ import { rest } from "msw";
 import { filterByFields, games } from "./fixtures/games";
 
 export const GAMES_PAGE_SIZE = 24;
+export const gamesMockOptions = {
+  returnError: false,
+};
 
 export const gamesHandlers = [
   rest.get("/games/:page", (req, res, ctx) => {
+    if (gamesMockOptions.returnError) {
+      return res(
+        ctx.status(400),
+        ctx.json({
+          errorMessage: "There was an error",
+        })
+      );
+    }
+
     let clonedGames = [...games];
     const currentPage = Number(req.params.page);
 

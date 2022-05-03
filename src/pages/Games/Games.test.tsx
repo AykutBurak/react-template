@@ -3,7 +3,7 @@ import { renderWithClient, screen, waitFor } from "../../test-utils";
 import "@testing-library/jest-dom";
 import { server } from "mocks/server";
 import Games from "./index";
-import { GAMES_PAGE_SIZE } from "mocks/games.handler";
+import { gamesMockOptions, GAMES_PAGE_SIZE } from "mocks/games.handler";
 import userEvent from "@testing-library/user-event";
 import { QueryCache, QueryClient } from "react-query";
 import { games } from "mocks/fixtures/games";
@@ -20,6 +20,7 @@ describe("Games page", () => {
 
   afterEach(() => {
     server.resetHandlers();
+    gamesMockOptions.returnError = false;
   });
 
   test("should show games", async () => {
@@ -103,14 +104,30 @@ describe("Games page", () => {
           `details-button-${firstGame.id}`
         );
         await user.click(seeDetailsBtn);
-
-        return screen.findByText(firstGame.id);
+        expect(screen.getByText(firstGame.id)).toBeInTheDocument();
       },
       {
         timeout: 3000,
       }
     );
+  });
 
-    expect(screen.getByText(firstGame.id)).toBeInTheDocument();
+  test("should show an error message when the query results with an error", async () => {
+    gamesMockOptions.returnError = true;
+    const queryCache = new QueryCache();
+    const queryClient = new QueryClient({
+      queryCache,
+      defaultOptions: {
+        queries: {
+          retry: false,
+        },
+      },
+    });
+
+    renderWithClient(queryClient, <Games />);
+
+    await waitFor(() => {
+      expect(screen.getByText(/something bad happened/i)).toBeInTheDocument();
+    });
   });
 });

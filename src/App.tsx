@@ -14,7 +14,7 @@ const GameDetail = React.lazy(() => import("pages/Games/_id"));
 
 const queryClient = new QueryClient();
 
-function App() {
+const App: React.FC<Record<string, never>> = () => {
   return (
     <ChakraProvider>
       <QueryClientProvider client={queryClient}>
@@ -58,6 +58,6 @@ function App() {
       </QueryClientProvider>
     </ChakraProvider>
   );
-}
+};
 
 export default App;
