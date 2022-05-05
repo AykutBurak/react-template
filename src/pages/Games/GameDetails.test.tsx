@@ -7,7 +7,7 @@ import { QueryCache, QueryClient } from "react-query";
 import { games } from "mocks/fixtures/games";
 import { Route } from "react-router-dom";
 
-describe("Games page", () => {
+describe("GameDetails page", () => {
   beforeAll(() => {
     server.listen();
   });
